@@ -6,14 +6,15 @@ let id = 0;
 shopItemRouter = express.Router();
 
 shopItemRouter.post("/", (req, res, next) => {
-    id++;
-    req.body.id = id;
     try {
+        id++;
+        req.body.id = id;
         fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.body) + "\n", { flag: "a+" });
         res.json(`${req.method} success`);
     }
-    catch(error) {
+    catch (error) {
         console.log(error);
+        res.status(500).send();
     }
 });
 
