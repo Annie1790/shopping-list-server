@@ -5,16 +5,16 @@ let id = 0;
 
 shopItemRouter = express.Router();
 
-shopItemRouter.use("/", (req,res,next) => {
-id++;
-req.body.id = id;
-next();
-})
-
 shopItemRouter.post("/", (req, res, next) => {
-    res.json(`${req.method} success`);
-    console.log(req.body);
-    fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.body) + "\n", { flag: "a+" }, error => { console.log(error) })
+    id++;
+    req.body.id = id;
+    try {
+        fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.body) + "\n", { flag: "a+" });
+        res.json(`${req.method} success`);
+    }
+    catch(error) {
+        console.log(error);
+    }
 });
 
 shopItemRouter.put("/", (req, res, next) => {

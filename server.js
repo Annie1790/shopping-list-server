@@ -9,11 +9,11 @@ app.use(express.json());
 const shopItemRouter = require("./routes/shopItem.js");
 app.use("/shopItem", shopItemRouter);
 
-const findIdRouter = require("./routes/findId.js");
-app.use("/shopItem/:id", findIdRouter);
+const shopItemById = require("./routes/shopItemById.js");
+app.use("/shopItem/:id", shopItemById);
 
-const tickStatusRouter = require("./routes/tickStatus.js");
-app.use("/shopItem/findByTickStatus", tickStatusRouter);
+const findStatusRouter = require("./routes/shopItemByStatus.js");
+app.use("/shopItem/findByStatus", findStatusRouter);
 
 app.use((req,res,next) => {
     console.log(req.get("user-agent"));
