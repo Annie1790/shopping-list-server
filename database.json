@@ -8,7 +8,7 @@
     },
     {
       "name": "yes",
-      "isCompleted": false,
+      "isCompleted": true,
       "id": 2
     },
     {
@@ -18,7 +18,7 @@
     },
     {
       "name": "cheese",
-      "isCompleted": false,
+      "isCompleted": true,
       "id": 4
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "name": "hello",
-      "isCompleted": false,
+      "isCompleted": true,
       "id": 6
     },
     {
