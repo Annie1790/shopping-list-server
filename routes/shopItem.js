@@ -7,7 +7,7 @@ shopItemRouter = express.Router();
 
 shopItemRouter.post("/", (req, res, next) => {
     try {
-        if (typeof(req.body.name) === "string" && typeof(req.body.isCompleted === "boolean")) {
+        if (typeof(req.body.name) === "string" && typeof(req.body.isCompleted) === "boolean") {
             if ("isCompleted" in req.body === false) {
                 req.body.isCompleted = false;
             };
