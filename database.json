@@ -1,5 +1,5 @@
 {
-  "nextId": 7,
+  "nextId": 8,
   "shopItems": [
     {
       "name": "beans",
@@ -30,6 +30,11 @@
       "name": "hello",
       "isCompleted": false,
       "id": 6
+    },
+    {
+      "name": "fkods",
+      "isCompleted": false,
+      "id": 7
     }
   ]
 }
