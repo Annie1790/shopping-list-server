@@ -16,11 +16,13 @@ shopItemRouter.post("/", (req, res, next) => {
             fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.body) + "\n", { flag: "a+" });
             res.json(`${req.method} success`);
             res.status(201).send();
+        } else {
+            res.status(405).send();
         }
     }
     catch (error) {
         console.log(error);
-        res.status(405).send();
+        res.status(500).send();
     }
 });
 
