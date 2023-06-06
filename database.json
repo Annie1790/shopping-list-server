@@ -1,4 +1,8 @@
-{"name":"bread","isCompleted":false}
 {"name":"cucumber","isCompleted":false,"id":1}
-{"name":"bread","isCompleted":false,"id":2}
-{"name":"paper","isCompleted":false,"id":1}
+{"name":"bread","isCompleted":true,"id":2}
+{"name":"paper","isCompleted":true,"id":3}
+{"name":"fish","isCompleted":false,"id":4}
+{"name":"meat","isCompleted":true,"id":5}
+{"name":"eggs","isCompleted":false,"id":6}
+{"name":"tomatoes","isCompleted":false,"id":7}
+{"name":"crisps","isCompleted":true,"id":8}
