@@ -1,9 +1,12 @@
 const express = require("express");
 const fs = require("fs");
 const resolve = require("path").resolve;
-let id = 0;
+
+const readDatabase = require("../utility.js");
 
 shopItemRouter = express.Router();
+
+shopItemRouter.use(readDatabase);
 
 shopItemRouter.post("/", (req, res, next) => {
     try {
@@ -11,9 +14,10 @@ shopItemRouter.post("/", (req, res, next) => {
             req.body.isCompleted = false;
         }
         if (typeof (req.body.name) === "string" && typeof (req.body.isCompleted) === "boolean") {
-            id++;
-            req.body.id = id;
-            fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.body) + "\n", { flag: "a+" });
+            req.body.id = req.database.nextId;
+            req.database.nextId += 1;
+            req.database.shopItems.push(req.body);
+            fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.database, null, 2) + "\n");
             res.json(`${req.method} success`);
             res.status(201).send();
         } else {
