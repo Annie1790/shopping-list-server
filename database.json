@@ -1,8 +1,40 @@
-{"name":"cucumber","isCompleted":false,"id":1}
-{"name":"bread","isCompleted":true,"id":2}
-{"name":"paper","isCompleted":true,"id":3}
-{"name":"fish","isCompleted":false,"id":4}
-{"name":"meat","isCompleted":true,"id":5}
-{"name":"eggs","isCompleted":false,"id":6}
-{"name":"tomatoes","isCompleted":false,"id":7}
-{"name":"crisps","isCompleted":true,"id":8}
+{
+  "nextId": 8,
+  "shopItems": [
+    {
+      "name": "beans",
+      "isCompleted": false,
+      "id": 1
+    },
+    {
+      "name": "yes",
+      "isCompleted": false,
+      "id": 2
+    },
+    {
+      "name": "no",
+      "isCompleted": false,
+      "id": 3
+    },
+    {
+      "name": "cheese",
+      "isCompleted": false,
+      "id": 4
+    },
+    {
+      "name": "croissant",
+      "isCompleted": false,
+      "id": 5
+    },
+    {
+      "name": "hello",
+      "isCompleted": false,
+      "id": 6
+    },
+    {
+      "name": "fkods",
+      "isCompleted": false,
+      "id": 7
+    }
+  ]
+}
