@@ -7,14 +7,18 @@ shopItemRouter = express.Router();
 
 shopItemRouter.post("/", (req, res, next) => {
     try {
+        if ("isCompleted" in req.body === false) {
+            req.body.isCompleted = false;
+        };
         id++;
         req.body.id = id;
         fs.writeFileSync(resolve("./database.json"), JSON.stringify(req.body) + "\n", { flag: "a+" });
         res.json(`${req.method} success`);
+        res.status(201).send();
     }
     catch (error) {
         console.log(error);
-        res.status(500).send();
+        res.status(405).send();
     }
 });
 
