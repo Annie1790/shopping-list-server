@@ -15,11 +15,11 @@ const writeDatabase = (database) => {
 
 };
 
-const filterArr = (arr, state) => {
+const filterByStatus = (arr, state) => {
     let result = arr.filter((item) => {
         return item.isCompleted == state
     });
     return result;
 };
 
-module.exports = {readDatabaseMiddleware, writeDatabase, filterArr};
+module.exports = {readDatabaseMiddleware, writeDatabase, filterByStatus};

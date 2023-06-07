@@ -1,5 +1,5 @@
 {
-  "nextId": 8,
+  "nextId": 17,
   "shopItems": [
     {
       "name": "beans",
@@ -7,12 +7,12 @@
       "id": 1
     },
     {
-      "name": "yes",
+      "name": "nuts",
       "isCompleted": true,
       "id": 2
     },
     {
-      "name": "no",
+      "name": "milk",
       "isCompleted": false,
       "id": 3
     },
@@ -27,14 +27,49 @@
       "id": 5
     },
     {
-      "name": "hello",
+      "name": "crisps",
       "isCompleted": true,
       "id": 6
     },
     {
-      "name": "fkods",
+      "name": "tomatoes",
       "isCompleted": false,
       "id": 7
+    },
+    {
+      "name": "eggs",
+      "isCompleted": false,
+      "id": 8
+    },
+    {
+      "name": "cabbage",
+      "isCompleted": false,
+      "id": 9
+    },
+    {
+      "name": "saucisson",
+      "isCompleted": false,
+      "id": 10
+    },
+    {
+      "name": "cornichons",
+      "isCompleted": false,
+      "id": 11
+    },
+    {
+      "name": "joghurt",
+      "isCompleted": false,
+      "id": 12
+    },
+    {
+      "name": "e.g: bread",
+      "isCompleted": false,
+      "id": 13
+    },
+    {
+      "name": "celery",
+      "isCompleted": false,
+      "id": 16
     }
   ]
 }

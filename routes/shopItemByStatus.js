@@ -6,14 +6,14 @@ findStatusRouter = express.Router();
 findStatusRouter.use(utility.readDatabaseMiddleware);
 
 findStatusRouter.get("/", (req, res, next) => {
-    const isQuery = req.query.isCompleted || "";
+    const isCompleted = req.query.isCompleted || "";
     let groceryArray = req.database.shopItems;
-    if (isQuery === "true" || isQuery === "false" || isQuery === "") {
-        if (isQuery === "true") {
-            groceryArray = utility.filterArr(groceryArray, true)
-        } else if (isQuery === "false") {
-            groceryArray = utility.filterArr(groceryArray, false)
-        };
+    if (isCompleted === "true" || isCompleted === "false" || isCompleted === "") {
+        if (isCompleted === "true") {
+            groceryArray = utility.filterByStatus(groceryArray, true)
+        } else if (isCompleted === "false") {
+            groceryArray = utility.filterByStatus(groceryArray, false)
+        }
         res.status(200);
         res.send(groceryArray);
     } else {
