@@ -1,5 +1,5 @@
 {
-  "nextId": 17,
+  "nextId": 23,
   "shopItems": [
     {
       "name": "beans",
@@ -70,6 +70,36 @@
       "name": "celery",
       "isCompleted": false,
       "id": 16
+    },
+    {
+      "name": "pear",
+      "isCompleted": false,
+      "id": 17
+    },
+    {
+      "name": "wine",
+      "isCompleted": false,
+      "id": 18
+    },
+    {
+      "name": "pasta",
+      "isCompleted": false,
+      "id": 19
+    },
+    {
+      "name": "coffee",
+      "isCompleted": false,
+      "id": 20
+    },
+    {
+      "name": "onions",
+      "isCompleted": false,
+      "id": 21
+    },
+    {
+      "name": "butter",
+      "isCompleted": false,
+      "id": 22
     }
   ]
 }

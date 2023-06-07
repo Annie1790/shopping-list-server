@@ -12,7 +12,6 @@ const readDatabaseMiddleware = (req, res, next) => {
 
 const writeDatabase = (database) => {
     fs.writeFileSync(resolve("./database.json"), JSON.stringify(database, null, 2) + "\n");
-
 };
 
 const filterByStatus = (arr, state) => {
