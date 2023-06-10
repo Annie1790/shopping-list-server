@@ -28,7 +28,19 @@ shopItemRouter.post("/", (req, res, next) => {
 });
 
 shopItemRouter.put("/", (req, res, next) => {
-
+    if (typeof req.body.id != "number") {
+        res.status(400).send();
+    }
+    const isIdInOurDatabase = req.database.shopItems.findIndex((item) => {
+        return item.id === req.body.id;
+    })
+    if (isIdInOurDatabase !== -1) {
+        req.database.shopItems[isIdInOurDatabase].name = req.body.name;
+        utility.writeDatabase(req.database);
+        res.status(200).send(`${req.method} success`);
+    } else {
+        res.status(404).send();
+    }
 });
 
 module.exports = shopItemRouter;
