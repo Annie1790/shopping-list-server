@@ -34,19 +34,20 @@ shopItemRouter.put("/", (req, res, next) => {
         }
         if (typeof req.body.id != "number") {
             res.status(400).send();
+            return;
         }
         const isIdInOurDatabase = req.database.shopItems.findIndex((item) => {
             return item.id === req.body.id;
         })
         if (isIdInOurDatabase !== -1) {
-            req.database.shopItems[isIdInOurDatabase].name = req.body.name;
+            req.database.shopItems[isIdInOurDatabase] = req.body;
             utility.writeDatabase(req.database);
             res.status(200).send(`${req.method} success`);
         } else {
             res.status(404).send();
         }
     }
-    catch(error) {
+    catch (error) {
         console.log(error);
         res.status(500).send();
     }
