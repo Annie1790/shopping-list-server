@@ -10,7 +10,7 @@ shopItemRouter.post("/", (req, res, next) => {
         if ("isCompleted" in req.body === false) {
             req.body.isCompleted = false;
         }
-        if (typeof (req.body.name) === "string" && typeof (req.body.isCompleted) === "boolean") {
+        if ((typeof req.body.name) === "string" && (typeof req.body.isCompleted) === "boolean") {
             req.body.id = req.database.nextId;
             req.database.nextId += 1;
             req.database.shopItems.push(req.body);
@@ -32,7 +32,7 @@ shopItemRouter.put("/", (req, res, next) => {
         if ("isCompleted" in req.body === false) {
             req.body.isCompleted = false;
         }
-        if (typeof req.body.id != "number") {
+        if ((typeof req.body.name) !== "string" || (typeof req.body.isCompleted) !== "boolean" || (typeof req.body.id) != "number") {
             res.status(400).send();
             return;
         }
