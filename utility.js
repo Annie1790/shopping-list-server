@@ -16,7 +16,7 @@ const writeDatabase = (database) => {
 
 const filterByStatus = (arr, state) => {
     let result = arr.filter((item) => {
-        return item.isCompleted == state
+        return item.is_completed == state
     });
     return result;
 };
