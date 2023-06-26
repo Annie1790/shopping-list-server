@@ -3,20 +3,17 @@ const app = express();
 const cors = require("cors");
 const PORT = 4000;
 const sqlite = require("sqlite3");
+const exit = require("process");
 
-let db = new sqlite.Database("../shopping-list-database/database.sqlite", err => {
+let db = new sqlite.Database("./database/database.sqlite", err => {
     if (err) {
-        console.log(err.message)
+        console.log(err);
+        exit(-1);
     } else {
         console.log("Database connected");
+        db.run("CREATE TABLE IF NOT EXISTS grocery_list (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, is_completed BOOLEAN DEFAULT false)");
     }
 });
-//Already runned, table exist
-// db.run("CREATE TABLE grocery_items (name, isCompleted, id)");
-
-// const firstQuery = `INSERT INTO grocery_items (name TEXT, isCompleted, id)
-//         VALUES(?, ?, NULL)`
-// db.run(firstQuery,["bread", false])
 
 module.exports = db;
 
@@ -32,7 +29,7 @@ app.use("/shopItem/:id", shopItemById);
 const shopItemRouter = require("./routes/shopItem.js");
 app.use("/shopItem", shopItemRouter);
 
-app.use((req,res,next) => {
+app.use((req, res, next) => {
     console.log(req.get("user-agent"));
     next();
 })
