@@ -16,9 +16,20 @@ const writeDatabase = (database) => {
 
 const filterByStatus = (arr, state) => {
     let result = arr.filter((item) => {
-        return item.isCompleted == state
+        return item.is_completed == state
     });
     return result;
 };
 
-module.exports = {readDatabaseMiddleware, writeDatabase, filterByStatus};
+const convertDatabaseRows = (arr) => {
+    let result = arr.map((object) => {
+        return {
+            id: object.id,
+            name: object.name,
+            isCompleted: object.is_completed == 1 ? true : false
+        }
+    });
+    return result;
+};
+
+module.exports = { readDatabaseMiddleware, writeDatabase, filterByStatus, convertDatabaseRows };
