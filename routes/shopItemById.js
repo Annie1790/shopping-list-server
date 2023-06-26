@@ -17,11 +17,11 @@ shopItemById.post("/", (req, res, next) => {
 shopItemById.delete("/", (req, res, next) => {
     req.params.id = Number(req.params.id);
     if (!isNaN(req.params.id)) {
-        const ifExist = req.database.shopItems.findIndex((item) => {
+        const deleteIndex = req.database.shopItems.findIndex((item) => {
             return item.id === req.params.id
         })
-        if (ifExist !== -1) {
-            req.database.shopItems.splice(ifExist, 1)
+        if (deleteIndex !== -1) {
+            req.database.shopItems.splice(deleteIndex, 1)
             utility.writeDatabase(req.database);
             res.status(204).send();
         } else {
