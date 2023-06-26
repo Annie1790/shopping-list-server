@@ -1,8 +1,7 @@
 const express = require("express");
-
 shopItemById = express.Router({ mergeParams: true });
-
 const utility = require("../utility.js");
+const db = require("../server.js");
 
 shopItemById.use(utility.readDatabaseMiddleware);
 
@@ -17,16 +16,10 @@ shopItemById.post("/", (req, res, next) => {
 shopItemById.delete("/", (req, res, next) => {
     req.params.id = Number(req.params.id);
     if (!isNaN(req.params.id)) {
-        const deleteIndex = req.database.shopItems.findIndex((item) => {
-            return item.id === req.params.id
-        })
-        if (deleteIndex !== -1) {
-            req.database.shopItems.splice(deleteIndex, 1)
-            utility.writeDatabase(req.database);
-            res.status(204).send();
-        } else {
-            res.status(404).send();
-        }
+        db.run("DELETE FROM grocery_list WHERE id = $id", {
+            $id: req.params.id
+        });
+        res.status(204).send();
     } else {
         res.status(400).send();
     }
