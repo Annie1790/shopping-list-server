@@ -4,8 +4,6 @@ const db = require("../server.js");
 
 findStatusRouter = express.Router();
 
-findStatusRouter.use(utility.readDatabaseMiddleware);
-
 findStatusRouter.get("/", (req, res, next) => {
     let isCompleted = req.query.isCompleted || "";
     if (isCompleted === "true" || isCompleted === "false") {

@@ -4,16 +4,21 @@ const db = require("../server.js");
 
 shopItemRouter = express.Router();
 
-shopItemRouter.use(utility.readDatabaseMiddleware);
-
 shopItemRouter.post("/", (req, res, next) => {
     try {
         if ("isCompleted" in req.body === false) {
             req.body.isCompleted = false;
         }
         if ((typeof req.body.name) === "string" && (typeof req.body.isCompleted) === "boolean") {
-            db.run("INSERT INTO grocery_list (name) VALUES(?)", [`${req.body.name}`]);
-            res.status(201).send();
+            db.run("INSERT INTO grocery_list (name) VALUES(?)",
+                [`${req.body.name}`],
+                function (err) {
+                    if (err) {
+                        res.status(405).send();
+                    } else {
+                        res.status(201).send();
+                    }
+                });
         } else {
             res.status(405).send();
         }
@@ -33,11 +38,18 @@ shopItemRouter.put("/", (req, res, next) => {
             res.status(400).send();
             return;
         }
-            db.run("UPDATE grocery_list SET name=$name WHERE id=$id", {
-                $name: req.body.name,
-                $id: req.body.id
-            })
-            res.status(200).send();
+        db.run("UPDATE grocery_list SET name=$name, is_completed=$is_completed WHERE id=$id", {
+            $name: req.body.name,
+            $is_completed: req.body.isCompleted,
+            $id: req.body.id
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                res.status(500).send();
+            } else {
+                res.status(200).send();
+            }
+        })
     }
     catch (error) {
         console.log(error);
