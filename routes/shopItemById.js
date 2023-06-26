@@ -14,7 +14,8 @@ shopItemById.post("/", (req, res, next) => {
 });
 
 shopItemById.delete("/", (req, res, next) => {
-    req.params.id = Number(req.params.id);
+    try {
+        req.params.id = Number(req.params.id);
     if (!isNaN(req.params.id)) {
         db.run("DELETE FROM grocery_list WHERE id = $id", {
             $id: req.params.id
@@ -22,6 +23,10 @@ shopItemById.delete("/", (req, res, next) => {
         res.status(204).send();
     } else {
         res.status(400).send();
+    }
+    } catch(error) {
+        console.log(error);
+        res.status(500).send();
     }
 });
 
