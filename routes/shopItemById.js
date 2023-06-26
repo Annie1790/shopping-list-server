@@ -20,6 +20,8 @@ shopItemById.delete("/", (req, res, next) => {
             }, function(err) {
                 if (err) {
                     console.log(err);
+                    res.status(500).send();
+                } else if (this.changes === 0) {
                     res.status(404).send();
                 } else {
                     res.status(204).send();

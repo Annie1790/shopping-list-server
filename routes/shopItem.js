@@ -10,8 +10,8 @@ shopItemRouter.post("/", (req, res, next) => {
             req.body.isCompleted = false;
         }
         if ((typeof req.body.name) === "string" && (typeof req.body.isCompleted) === "boolean") {
-            db.run("INSERT INTO grocery_list (name) VALUES(?)",
-                [`${req.body.name}`],
+            db.run("INSERT INTO grocery_list (name, is_completed) VALUES(?, ?)",
+                [req.body.name, req.body.isCompleted],
                 function (err) {
                     if (err) {
                         res.status(405).send();
@@ -43,9 +43,9 @@ shopItemRouter.put("/", (req, res, next) => {
             $is_completed: req.body.isCompleted,
             $id: req.body.id
         }, function (err) {
-            if (err) {
+            if (this.changes === 0) {
                 console.log(err);
-                res.status(500).send();
+                res.status(404).send();
             } else {
                 res.status(200).send();
             }
