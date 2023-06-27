@@ -14,7 +14,8 @@ shopItemRouter.post("/", (req, res, next) => {
                 [req.body.name, req.body.isCompleted],
                 function (err) {
                     if (err) {
-                        res.status(405).send();
+                        console.log(err);
+                        res.status(500).send();
                     } else {
                         res.status(201).send();
                     }
@@ -43,8 +44,11 @@ shopItemRouter.put("/", (req, res, next) => {
             $is_completed: req.body.isCompleted,
             $id: req.body.id
         }, function (err) {
-            if (this.changes === 0) {
+            if (err) {
                 console.log(err);
+                res.status(500).send();
+            }
+            else if (this.changes === 0) {
                 res.status(404).send();
             } else {
                 res.status(200).send();
