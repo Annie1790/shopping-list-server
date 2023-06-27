@@ -1,9 +1,8 @@
 const express = require("express");
 const utility = require("../utility.js");
+const db = require("../server.js");
 
 shopItemRouter = express.Router();
-
-shopItemRouter.use(utility.readDatabaseMiddleware);
 
 shopItemRouter.post("/", (req, res, next) => {
     try {
@@ -11,12 +10,16 @@ shopItemRouter.post("/", (req, res, next) => {
             req.body.isCompleted = false;
         }
         if ((typeof req.body.name) === "string" && (typeof req.body.isCompleted) === "boolean") {
-            req.body.id = req.database.nextId;
-            req.database.nextId += 1;
-            req.database.shopItems.push(req.body);
-            utility.writeDatabase(req.database);
-            res.json(`${req.method} success`);
-            res.status(201).send();
+            db.run("INSERT INTO grocery_list (name, is_completed) VALUES(?, ?)",
+                [req.body.name, req.body.isCompleted],
+                function (err) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send();
+                    } else {
+                        res.status(201).send();
+                    }
+                });
         } else {
             res.status(405).send();
         }
@@ -36,16 +39,21 @@ shopItemRouter.put("/", (req, res, next) => {
             res.status(400).send();
             return;
         }
-        const isIdInOurDatabase = req.database.shopItems.findIndex((item) => {
-            return item.id === req.body.id;
+        db.run("UPDATE grocery_list SET name=$name, is_completed=$is_completed WHERE id=$id", {
+            $name: req.body.name,
+            $is_completed: req.body.isCompleted,
+            $id: req.body.id
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                res.status(500).send();
+            }
+            else if (this.changes === 0) {
+                res.status(404).send();
+            } else {
+                res.status(200).send();
+            }
         })
-        if (isIdInOurDatabase !== -1) {
-            req.database.shopItems[isIdInOurDatabase] = req.body;
-            utility.writeDatabase(req.database);
-            res.status(200).send(`${req.method} success`);
-        } else {
-            res.status(404).send();
-        }
     }
     catch (error) {
         console.log(error);
