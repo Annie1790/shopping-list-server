@@ -4,10 +4,9 @@ const db = require("../server.js");
 tagsRouter = express.Router();
 //post new tag
 tagsRouter.post("/", (req, res, next) => {
-    console.log(req.body);
     try {
         if ((typeof req.body.id) === "number" && (typeof req.body.tag_name) === "string" && (typeof req.body.color) === "string") {
-            db.run("INSERT INTO tag_list (id, tag_name, color) VALUES(?,?,?)",
+            db.run("INSERT INTO tag_list (grocery_list_id, tag_name, color) VALUES(?,?,?)",
                 [req.body.id, `#${req.body.tag_name}`, req.body.color],
                 function (err) {
                     if (err) {
