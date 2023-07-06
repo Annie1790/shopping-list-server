@@ -11,8 +11,9 @@ let db = new sqlite.Database("./database/database.sqlite", err => {
         exit(-1);
     } else {
         console.log("Database connected");
-        db.run("CREATE TABLE IF NOT EXISTS grocery_list (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, is_completed BOOLEAN DEFAULT false)");
-        db.run("CREATE TABLE IF NOT EXISTS tag_list (id INTEGER NOT NULL, tag_name TEXT, tag_id INTEGER PRIMARY KEY AUTOINCREMENT, color TEXT)");
+        db.run("CREATE TABLE IF NOT EXISTS grocery_list (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, is_completed BOOLEAN NOT NULL DEFAULT false)");
+        db.run("CREATE TABLE IF NOT EXISTS tag_list (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, rank REAL NOT NULL, tag_color TEXT)");
+        // db.run("CREATE TABLE IF NOT EXISTS grocery_and_tag (grocery_id INTEGER NOT NULL, tag_id INTEGER NOT NULL, PRIMARY KEY (grocery_id, tag_id), FOREIGN KEY (grocery_id) REFERENCES grocery_list (id) ON DELETE CASCADE ON UPDATE CASCADE, FOREIGN KEY (tag_id) REFERENCES tag_list (id) ON DELETE CASCADE ON UPDATE CASCADE)");
     }
 });
 

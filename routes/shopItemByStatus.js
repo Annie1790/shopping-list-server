@@ -1,44 +1,64 @@
 const express = require("express");
 const utility = require("../utility.js");
 const db = require("../server.js");
+const sql = require("../database/database.js");
 
 findStatusRouter = express.Router();
 
+const result = async (isCompletedStatus) => {
+    const data = await sql`
+    WITH grocery_with_tags AS (
+        SELECT g.grocery_id, MIN(t.tag_rank) as min_rank, json_agg(t) AS tags_json
+        FROM grocery_list AS g
+        LEFT JOIN grocery_tags_junction AS gt ON g.grocery_id = gt.grocery_id
+        LEFT JOIN tag_list AS t ON t.tag_id = gt.tag_id
+        GROUP BY g.grocery_id
+    )
+    SELECT g.grocery_id, g.grocery_name, g.is_completed, gwt.min_rank, gwt.tags_json
+    FROM grocery_list AS g
+    LEFT JOIN grocery_with_tags AS gwt ON g.grocery_id = gwt.grocery_id
+    WHERE g.is_completed =${isCompletedStatus}
+    ORDER BY gwt.min_rank ASC
+    `
+    return data;
+};
+
 findStatusRouter.get("/", (req, res, next) => {
     let isCompleted = req.query.isCompleted || "";
-    if (isCompleted === "true" || isCompleted === "false") {
-        //Must be converted to boolean in order to use db.all clause
-        isCompleted = isCompleted == "true";
-        db.all("SELECT grocery_list.id, grocery_list.name, grocery_list.is_completed, tag_list.id AS `tag_id`, tag_list.tag_name, tag_list.color FROM grocery_list LEFT JOIN tag_list ON grocery_list.id = tag_list.grocery_list_id WHERE grocery_list.is_completed=$is_completed", {
-            $is_completed: isCompleted
+
+    if (isCompleted === false) {
+        result(false).then((value) => {
+            res.status(200);
+            res.send(value);
         },
-            (err, rows) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send();
-                    return;
-                } else {
-                    let result = utility.fullShopItemFromRows(rows);
-                    res.status(200);
-                    res.send(result);
-                }
-            })
-    } else if (isCompleted === "") {
-        db.all("SELECT id, name, is_completed FROM grocery_list",
-            (err, rows) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send();
-                    return;
-                } else {
-                    rows = utility.fullShopItemFromRows(rows);
-                    res.status(200);
-                    res.send(rows);
-                }
-            })
+            (reason) => {
+                console.log(reason);
+                res.status(500).send();
+            }
+        );
+    } else if (isCompleted === true) {
+        result(true).then((value) => {
+            res.status(200);
+            res.send(value);
+        },
+            (reason) => {
+                console.log(reason);
+                res.status(500).send();
+            }
+        );
     } else {
-        res.status(400).send();
+        result("").then((value) => {
+            res.status(200);
+            res.send(value);
+        },
+            (reason) => {
+                console.log(reason);
+                res.status(500).send();
+            }
+        );
     }
-})
+
+
+});
 
 module.exports = findStatusRouter;
