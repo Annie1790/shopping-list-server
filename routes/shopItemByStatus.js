@@ -27,7 +27,8 @@ findStatusRouter.get("/", (req, res, next) => {
     let isCompleted = req.query.isCompleted || "";
 
     if (isCompleted === false) {
-        result(false).then((value) => {
+        result(false)
+        .then((value) => {
             res.status(200);
             res.send(value);
         },
@@ -37,7 +38,8 @@ findStatusRouter.get("/", (req, res, next) => {
             }
         );
     } else if (isCompleted === true) {
-        result(true).then((value) => {
+        result(true)
+        .then((value) => {
             res.status(200);
             res.send(value);
         },
@@ -47,7 +49,8 @@ findStatusRouter.get("/", (req, res, next) => {
             }
         );
     } else {
-        result("").then((value) => {
+        result("")
+        .then((value) => {
             res.status(200);
             res.send(value);
         },

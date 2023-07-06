@@ -1,38 +1,32 @@
 const express = require("express");
 shopItemById = express.Router({ mergeParams: true });
-const utility = require("../utility.js");
-const db = require("../server.js");
+const sql = require("../database/database.js");
 
-shopItemById.get("/", (req, res, next) => {
-
-});
-
-shopItemById.post("/", (req, res, next) => {
-
-});
+const result = async (id) => {
+    const data = await sql`
+    DELETE FROM grocery_list AS g WHERE g.grocery_id = ${id}
+    `
+    return data;
+};
 
 shopItemById.delete("/", (req, res, next) => {
-    try {
-        req.params.id = Number(req.params.id);
-        if (!isNaN(req.params.id)) {
-            db.run("DELETE FROM grocery_list WHERE id = $id", {
-                $id: req.params.id
-            }, function(err) {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send();
-                } else if (this.changes === 0) {
+    req.params.id = Number(req.params.id);
+    if (!isNaN(req.params.id)) {
+        result(req.params.id)
+            .then(() => {
+                if (!req.params.id) {
                     res.status(404).send();
                 } else {
                     res.status(204).send();
                 }
-            });
-        } else {
-            res.status(400).send();
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).send();
+            },
+                (reason) => {
+                    console.log(reason);
+                    res.status(500).send();
+                }
+            );
+    } else {
+        res.status(400).send();
     }
 });
 
