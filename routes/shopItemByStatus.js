@@ -4,8 +4,16 @@ const utility = require("../utility.js");
 
 findStatusRouter = express.Router();
 
-const result = async (isCompletedStatus) => {
-    const data = await sql`
+const sendResults = (res, value) => {
+    utility.changeNullToEmptyArr(value);
+    res.status(200);
+    res.send(value);
+};
+
+findStatusRouter.get("/", (req, res, next) => {
+    //query
+    const result = async (isCompletedStatus) => {
+        const data = await sql`
     WITH grocery_with_tags AS (
         SELECT g.grocery_id, MIN(t.tag_rank) as min_rank, json_agg(t) AS tags_json
         FROM grocery_list AS g
@@ -19,30 +27,25 @@ const result = async (isCompletedStatus) => {
     WHERE g.is_completed = ${isCompletedStatus}
     ORDER BY gwt.min_rank ASC
     `
-    return data;
-};
+        return data;
+    };
+    //
+    let isCompleted = req.query.is_completed || "";
 
-findStatusRouter.get("/", (req, res, next) => {
-    let isCompleted = req.query.isCompleted || "";
-
-    if (isCompleted === false) {
+    if (isCompleted === "false") {
         result(false)
             .then((value) => {
-                utility.changeNullToEmptyArr(value);
-                res.status(200);
-                res.send(value);
+                sendResults(res, value);
             },
                 (reason) => {
                     console.log(reason);
                     res.status(500).send();
                 }
             );
-    } else if (isCompleted === true) {
+    } else if (isCompleted === "true") {
         result(true)
             .then((value) => {
-                utility.changeNullToEmptyArr(value);
-                res.status(200);
-                res.send(value);
+                sendResults(res, value);
             },
                 (reason) => {
                     console.log(reason);
@@ -52,9 +55,7 @@ findStatusRouter.get("/", (req, res, next) => {
     } else {
         result("")
             .then((value) => {
-                utility.changeNullToEmptyArr(value);
-                res.status(200);
-                res.send(value);
+                sendResults(res, value);
             },
                 (reason) => {
                     console.log(reason);
@@ -62,8 +63,6 @@ findStatusRouter.get("/", (req, res, next) => {
                 }
             );
     }
-
-
 });
 
 module.exports = findStatusRouter;

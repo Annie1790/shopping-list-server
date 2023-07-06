@@ -3,14 +3,14 @@ const sql = require("../database/database.js");
 
 shopItemRouter = express.Router();
 
-const result = async (name, is_completed) => {
-    const data = await sql`
-    INSERT INTO grocery_list (grocery_name, is_completed) VALUES (${name}, ${is_completed})
-    `
-    return data;
-};
-
 shopItemRouter.post("/", (req, res, next) => {
+    const result = async (name, is_completed) => {
+        const data = await sql`
+        INSERT INTO grocery_list (grocery_name, is_completed) VALUES (${name}, ${is_completed})
+        `
+        return data;
+    };    
+
     if ("is_completed" in req.body === false) {
         req.body.isCompleted = false;
     }
