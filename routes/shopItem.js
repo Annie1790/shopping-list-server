@@ -1,32 +1,31 @@
 const express = require("express");
-const utility = require("../utility.js");
-const db = require("../server.js");
+const sql = require("../database/database.js");
 
 shopItemRouter = express.Router();
 
+const result = async (name, is_completed) => {
+    const data = await sql`
+    INSERT INTO grocery_list (grocery_name, is_completed) VALUES (${name}, ${is_completed})
+    `
+    return data;
+};
+
 shopItemRouter.post("/", (req, res, next) => {
-    try {
-        if ("isCompleted" in req.body === false) {
-            req.body.isCompleted = false;
-        }
-        if ((typeof req.body.name) === "string" && (typeof req.body.isCompleted) === "boolean") {
-            db.run("INSERT INTO grocery_list (name, is_completed) VALUES(?, ?)",
-                [req.body.name, req.body.isCompleted],
-                function (err) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send();
-                    } else {
-                        res.status(201).send();
-                    }
-                });
-        } else {
-            res.status(405).send();
-        }
+    if ("is_completed" in req.body === false) {
+        req.body.isCompleted = false;
     }
-    catch (error) {
-        console.log(error);
-        res.status(500).send();
+    if ((typeof req.body.name) === "string" && (typeof req.body.is_completed) === "boolean") {
+        result(req.body.name, req.body.is_completed)
+            .then(() => {
+                res.status(201).send();
+            },
+                (reason) => {
+                    console.log(reason);
+                    res.status(500).send();
+                }
+            )
+    } else {
+        res.status(405).send();
     }
 });
 

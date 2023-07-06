@@ -1,7 +1,6 @@
 const express = require("express");
-const utility = require("../utility.js");
-const db = require("../server.js");
 const sql = require("../database/database.js");
+const utility = require("../utility.js");
 
 findStatusRouter = express.Router();
 
@@ -17,7 +16,7 @@ const result = async (isCompletedStatus) => {
     SELECT g.grocery_id, g.grocery_name, g.is_completed, gwt.min_rank, gwt.tags_json
     FROM grocery_list AS g
     LEFT JOIN grocery_with_tags AS gwt ON g.grocery_id = gwt.grocery_id
-    WHERE g.is_completed =${isCompletedStatus}
+    WHERE g.is_completed = ${isCompletedStatus}
     ORDER BY gwt.min_rank ASC
     `
     return data;
@@ -28,37 +27,40 @@ findStatusRouter.get("/", (req, res, next) => {
 
     if (isCompleted === false) {
         result(false)
-        .then((value) => {
-            res.status(200);
-            res.send(value);
-        },
-            (reason) => {
-                console.log(reason);
-                res.status(500).send();
-            }
-        );
+            .then((value) => {
+                utility.changeNullToEmptyArr(value);
+                res.status(200);
+                res.send(value);
+            },
+                (reason) => {
+                    console.log(reason);
+                    res.status(500).send();
+                }
+            );
     } else if (isCompleted === true) {
         result(true)
-        .then((value) => {
-            res.status(200);
-            res.send(value);
-        },
-            (reason) => {
-                console.log(reason);
-                res.status(500).send();
-            }
-        );
+            .then((value) => {
+                utility.changeNullToEmptyArr(value);
+                res.status(200);
+                res.send(value);
+            },
+                (reason) => {
+                    console.log(reason);
+                    res.status(500).send();
+                }
+            );
     } else {
         result("")
-        .then((value) => {
-            res.status(200);
-            res.send(value);
-        },
-            (reason) => {
-                console.log(reason);
-                res.status(500).send();
-            }
-        );
+            .then((value) => {
+                utility.changeNullToEmptyArr(value);
+                res.status(200);
+                res.send(value);
+            },
+                (reason) => {
+                    console.log(reason);
+                    res.status(500).send();
+                }
+            );
     }
 
 
