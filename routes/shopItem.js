@@ -9,7 +9,7 @@ shopItemRouter.post("/", (req, res, next) => {
         INSERT INTO grocery_list (grocery_name, is_completed) VALUES (${name}, ${is_completed})
         `
         return data;
-    };    
+    };
 
     if ("is_completed" in req.body === false) {
         req.body.isCompleted = false;
@@ -30,34 +30,29 @@ shopItemRouter.post("/", (req, res, next) => {
 });
 
 shopItemRouter.put("/", (req, res, next) => {
-    try {
-        if ("isCompleted" in req.body === false) {
-            req.body.isCompleted = false;
-        }
-        if ((typeof req.body.name) !== "string" || (typeof req.body.isCompleted) !== "boolean" || (typeof req.body.id) != "number") {
-            res.status(400).send();
-            return;
-        }
-        db.run("UPDATE grocery_list SET name=$name, is_completed=$is_completed WHERE id=$id", {
-            $name: req.body.name,
-            $is_completed: req.body.isCompleted,
-            $id: req.body.id
-        }, function (err) {
-            if (err) {
-                console.log(err);
-                res.status(500).send();
-            }
-            else if (this.changes === 0) {
-                res.status(404).send();
-            } else {
-                res.status(200).send();
-            }
-        })
+    const result = async () => {
+        const data = await sql`
+        UPDATE grocery_list 
+        SET grocery_name=${req.body.grocery_name}, is_completed=${req.body.is_completed} 
+        WHERE grocery_id=${req.body.grocery_id}
+        `
+        return data;
+    };
+
+    if ("is_completed" in req.body === false) {
+        req.body.is_completed = false;
     }
-    catch (error) {
-        console.log(error);
+    if ((typeof req.body.grocery_name) !== "string" || (typeof req.body.is_completed) !== "boolean" || (typeof req.body.grocery_id) != "number") {
+        res.status(400).send();
+        return;
+    }
+    result().then(() => {
+        res.status(204).send();
+    },
+    (reason) => {
+        console.log(reason);
         res.status(500).send();
-    }
+    })
 });
 
 module.exports = shopItemRouter;
