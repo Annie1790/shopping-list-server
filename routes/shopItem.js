@@ -1,7 +1,7 @@
 const express = require("express");
 const sql = require("../database/database.js");
 
-shopItemRouter = express.Router();
+const shopItemRouter = express.Router();
 
 shopItemRouter.post("/", (req, res, next) => {
     const result = async (name, is_completed) => {

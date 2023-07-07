@@ -2,7 +2,7 @@ const express = require("express");
 const sql = require("../database/database.js");
 const utility = require("../utility.js");
 
-findStatusRouter = express.Router();
+const findStatusRouter = express.Router();
 
 const sendResults = (res, value) => {
     utility.changeNullToEmptyArr(value);

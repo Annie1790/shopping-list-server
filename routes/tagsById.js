@@ -1,14 +1,6 @@
 const express = require("express");
-const db = require("../server.js");
+const sql = require("../database/database.js");
 
-tagsByIdRouter = express.Router();
-
-tagsByIdRouter.get("/", (req, res, next) => {
-
-});
-
-tagsByIdRouter.delete("/", (req, res, next) => {
-
-})
+const tagsByIdRouter = express.Router({ mergeParams: true });
 
 module.exports = tagsByIdRouter;

@@ -1,6 +1,7 @@
 const express = require("express");
-shopItemById = express.Router({ mergeParams: true });
 const sql = require("../database/database.js");
+
+const shopItemById = express.Router({ mergeParams: true });
 
 const result = async (id) => {
     const data = await sql`
