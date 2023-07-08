@@ -11,18 +11,22 @@ tagsRouter.get("/", (req, res, next) => {
         `
 
         return data;
-    }
-
-    result()
-        .then((value) => {
-            res.status(200).send(value)
-        },
-            (reason) => {
-                console.log(reason);
-                res.status(500).send();
-            }
-        )
-})
+    };
+        
+    if (result) {
+        result()
+            .then((value) => {
+                res.status(200).send(value)
+            },
+                (reason) => {
+                    console.log(reason);
+                    res.status(500).send();
+                }
+            );
+    } else {
+        res.status(404).send();
+    };
+});
 
 tagsRouter.post("/", (req, res, next) => {
     req.body.tag_id = Number(req.body.tag_id);

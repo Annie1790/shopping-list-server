@@ -43,16 +43,16 @@ shopItemRouter.put("/", (req, res, next) => {
         req.body.is_completed = false;
     }
     if ((typeof req.body.grocery_name) !== "string" || (typeof req.body.is_completed) !== "boolean" || (typeof req.body.grocery_id) != "number") {
-        res.status(400).send();
+        res.status(405).send();
         return;
     }
     result().then(() => {
         res.status(204).send();
     },
-    (reason) => {
-        console.log(reason);
-        res.status(500).send();
-    })
+        (reason) => {
+            console.log(reason);
+            res.status(500).send();
+        })
 });
 
 module.exports = shopItemRouter;
