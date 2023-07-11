@@ -5,7 +5,7 @@ const shopItemRouter = express.Router();
 
 shopItemRouter.post("/", async (req, res, next) => {
     const result = async (name, is_completed) => {
-        await sql`
+        return await sql`
         INSERT INTO grocery_list (grocery_name, is_completed) VALUES (${name}, ${is_completed})
         `
     };
@@ -28,7 +28,7 @@ shopItemRouter.post("/", async (req, res, next) => {
 
 shopItemRouter.put("/", async (req, res, next) => {
     const result = async (id) => {
-        await sql`
+        return await sql`
         UPDATE grocery_list 
         SET grocery_name=${req.body.grocery_name}, is_completed=${req.body.is_completed} 
         WHERE grocery_id=${id}
@@ -40,10 +40,7 @@ shopItemRouter.put("/", async (req, res, next) => {
     };
     if ((typeof req.body.grocery_name) == "string" || (typeof req.body.is_completed) == "boolean" || (typeof req.body.grocery_id) == "number") {
         try {
-            //bug 
-            console.log(result(req.body.grocery_id));
             const data = await result(req.body.grocery_id);
-            console.log(data);
             if (data.count === 0) {
                 res.status(404).send();
             } else {

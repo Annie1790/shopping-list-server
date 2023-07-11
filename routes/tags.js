@@ -7,7 +7,7 @@ const tagsRouter = express.Router();
 
 tagsRouter.get("/", async (req, res, next) => {
     const result = async () => {
-        await sql`
+        return await sql`
         SELECT t.tag_id, t.tag_name, t.tag_rank, t.tag_bg_color, t.tag_text_color
         FROM tag_list AS t
         `
@@ -31,7 +31,7 @@ tagsRouter.get("/", async (req, res, next) => {
 tagsRouter.post("/", async (req, res, next) => {
     req.body.tag_id = Number(req.body.tag_id);
     const result = async (grocery, tag) => {
-        await sql`
+        return await sql`
         INSERT INTO grocery_tags_junction (grocery_id, tag_id) VALUES (${grocery}, ${tag})
         `
     }
@@ -51,7 +51,7 @@ tagsRouter.post("/", async (req, res, next) => {
 
 tagsRouter.delete("/", async (req, res, next) => {
     const result = async (grocery, tag) => {
-        await sql`
+        return await sql`
         DELETE FROM grocery_tags_junction AS gt 
         WHERE gt.grocery_id=${grocery}
         AND gt.tag_id=${tag}

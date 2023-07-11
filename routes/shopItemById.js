@@ -5,10 +5,9 @@ const shopItemById = express.Router({ mergeParams: true });
 
 shopItemById.delete("/", async (req, res, next) => {
     const result = async (id) => {
-        const data = await sql`
+        return await sql`
     DELETE FROM grocery_list AS g WHERE g.grocery_id = ${id}
     `
-        return data;
     };
     req.params.id = Number(req.params.id);
     if (!isNaN(req.params.id)) {
