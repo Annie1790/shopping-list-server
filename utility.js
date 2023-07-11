@@ -49,7 +49,7 @@
 //     return results;
 // };
 
-const changeNullToEmptyArr = (arr) => {
+const convertDatabaseRows = (arr) => {
     arr.forEach((item) => {
         if (item.tags_json) {
             item.tags_json = item.tags_json.filter((tag) => tag !== null)
@@ -58,4 +58,4 @@ const changeNullToEmptyArr = (arr) => {
 }
 
 
-module.exports = {changeNullToEmptyArr};
+module.exports = {convertDatabaseRows};

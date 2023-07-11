@@ -5,15 +5,43 @@ const utility = require("../utility.js");
 const findStatusRouter = express.Router();
 
 const sendResults = (res, value) => {
-    utility.changeNullToEmptyArr(value);
+    utility.convertDatabaseRows(value);
     res.status(200);
     res.send(value);
 };
+//bug
+findStatusRouter.get("/", async (req, res, next) => {
+    // const getAll = async () => {
+    //     await sql`
+    //     SELECT 
+    //     * 
+    //     FROM 
+    //     public.get_all_grocery_tag_junction_all
+    //     `
+    // };
 
-findStatusRouter.get("/", (req, res, next) => {
-    //query
+    // const getTrue = async () => {
+    //     await sql`
+    //     SELECT 
+    //     *
+    //     FROM
+    //     public.get_all_grocery_tag_junction_true
+    //     `
+    // }
+
+    // const getFalse = async () => {
+    //     await sql`
+    //     SELECT 
+    //     *
+    //     FROM
+    //     public.get_all_grocery_tag_junction_false
+    //     `
+    // }
+
+    // console.log(await getAll(), await getTrue(), await getFalse());
+
     const result = async (isCompletedStatus) => {
-        const data = await sql`
+        await sql`
     WITH grocery_with_tags AS (
         SELECT g.grocery_id, MIN(t.tag_rank) as min_rank, json_agg(t) AS tags_json
         FROM grocery_list AS g
@@ -27,41 +55,41 @@ findStatusRouter.get("/", (req, res, next) => {
     WHERE g.is_completed = ${isCompletedStatus}
     ORDER BY gwt.min_rank ASC
     `
-        return data;
     };
     //
     let isCompleted = req.query.is_completed || "";
+    console.log(isCompleted)
 
-    if (isCompleted === "false") {
-        result(false)
-            .then((value) => {
-                sendResults(res, value);
-            },
-                (reason) => {
-                    console.log(reason);
-                    res.status(500).send();
-                }
-            );
-    } else if (isCompleted === "true") {
-        result(true)
-            .then((value) => {
-                sendResults(res, value);
-            },
-                (reason) => {
-                    console.log(reason);
-                    res.status(500).send();
-                }
-            );
+    if (isCompleted === "true") {
+        try {
+            let data = await result(true);
+            console.log(data);
+            sendResults(res, data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
+    } else if (isCompleted === "false") {
+        try {
+            let data = await result(false);
+            console.log(data);
+            sendResults(res, data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
     } else {
-        result("")
-            .then((value) => {
-                sendResults(res, value);
-            },
-                (reason) => {
-                    console.log(reason);
-                    res.status(500).send();
-                }
-            );
+        try {
+            let data = await result("");
+            console.log(data);
+            sendResults(res, data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
     }
 });
 

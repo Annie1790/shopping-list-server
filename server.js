@@ -6,9 +6,6 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
-const tagsByIdRouter = require("./routes/tagsById.js");
-app.use("/shopItem/:grocery/tags/:tag", tagsByIdRouter);
-
 const tagsRouter = require("./routes/tags.js");
 app.use("/tags", tagsRouter);
 

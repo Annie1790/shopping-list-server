@@ -3,56 +3,59 @@ const sql = require("../database/database.js");
 
 const shopItemRouter = express.Router();
 
-shopItemRouter.post("/", (req, res, next) => {
+shopItemRouter.post("/", async (req, res, next) => {
     const result = async (name, is_completed) => {
-        const data = await sql`
+        await sql`
         INSERT INTO grocery_list (grocery_name, is_completed) VALUES (${name}, ${is_completed})
         `
-        return data;
     };
 
     if ("is_completed" in req.body === false) {
         req.body.isCompleted = false;
     }
     if ((typeof req.body.name) === "string" && (typeof req.body.is_completed) === "boolean") {
-        result(req.body.name, req.body.is_completed)
-            .then(() => {
-                res.status(201).send();
-            },
-                (reason) => {
-                    console.log(reason);
-                    res.status(500).send();
-                }
-            )
+        try {
+            await result(req.body.name, req.body.is_completed);
+            res.status(201).send();
+        } catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
     } else {
         res.status(405).send();
     }
 });
 
-shopItemRouter.put("/", (req, res, next) => {
-    const result = async () => {
-        const data = await sql`
+shopItemRouter.put("/", async (req, res, next) => {
+    const result = async (id) => {
+        await sql`
         UPDATE grocery_list 
         SET grocery_name=${req.body.grocery_name}, is_completed=${req.body.is_completed} 
-        WHERE grocery_id=${req.body.grocery_id}
+        WHERE grocery_id=${id}
         `
-        return data;
     };
 
     if ("is_completed" in req.body === false) {
         req.body.is_completed = false;
-    }
-    if ((typeof req.body.grocery_name) !== "string" || (typeof req.body.is_completed) !== "boolean" || (typeof req.body.grocery_id) != "number") {
-        res.status(405).send();
-        return;
-    }
-    result().then(() => {
-        res.status(204).send();
-    },
-        (reason) => {
-            console.log(reason);
+    };
+    if ((typeof req.body.grocery_name) == "string" || (typeof req.body.is_completed) == "boolean" || (typeof req.body.grocery_id) == "number") {
+        try {
+            //bug 
+            console.log(result(req.body.grocery_id));
+            const data = await result(req.body.grocery_id);
+            console.log(data);
+            if (data.count === 0) {
+                res.status(404).send();
+            } else {
+                res.status(204).send();
+            }
+        } catch (error) {
+            console.log(error);
             res.status(500).send();
-        })
+        }
+    } else {
+        res.status(405).send();
+    };
 });
 
 module.exports = shopItemRouter;
