@@ -1,42 +1,56 @@
 const express = require("express");
+const sql = require("../database/database.js");
 const utility = require("../utility.js");
-const db = require("../server.js");
 
-findStatusRouter = express.Router();
+const findStatusRouter = express.Router();
 
-findStatusRouter.get("/", (req, res, next) => {
-    let isCompleted = req.query.isCompleted || "";
-    if (isCompleted === "true" || isCompleted === "false") {
-        //Must be converted to boolean in order to use db.all clause
-        isCompleted = isCompleted == "true";
-        db.all("SELECT id, name, is_completed FROM grocery_list WHERE is_completed=?", [isCompleted],
-            (err, rows) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send();
-                    return;
-                } else {
-                    rows = utility.convertDatabaseRows(rows);
-                    res.status(200);
-                    res.send(rows);
-                }
-            })
-    } else if (isCompleted === "") {
-        db.all("SELECT id, name, is_completed FROM grocery_list",
-            (err, rows) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send();
-                    return;
-                } else {
-                    rows = utility.convertDatabaseRows(rows);
-                    res.status(200);
-                    res.send(rows);
-                }
-            })
+const sendResults = (res, value) => {
+    utility.convertDatabaseRows(value);
+    res.status(200);
+    res.send(value);
+};
+//bug
+findStatusRouter.get("/", async (req, res, next) => {
+    const result = async (status) => {
+        return await sql`
+        SELECT 
+        * 
+        FROM 
+        get_all_grocery_tag_junction_all AS g
+        WHERE g.is_completed = ${status}
+        `
+    };
+
+    let isCompleted = req.query.is_completed || "";
+
+    if (isCompleted === "true") {
+        try {
+            let data = await result(true);
+            sendResults(res, data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
+    } else if (isCompleted === "false") {
+        try {
+            let data = await result(false);
+            sendResults(res, data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
     } else {
-        res.status(400).send();
+        try {
+            let data = await result("");
+            sendResults(res, data);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send();
+        }
     }
-})
+});
 
 module.exports = findStatusRouter;

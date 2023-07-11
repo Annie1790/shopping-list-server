@@ -2,23 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const PORT = 4000;
-const sqlite = require("sqlite3");
-const exit = require("process");
-
-let db = new sqlite.Database("./database/database.sqlite", err => {
-    if (err) {
-        console.log(err);
-        exit(-1);
-    } else {
-        console.log("Database connected");
-        db.run("CREATE TABLE IF NOT EXISTS grocery_list (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, is_completed BOOLEAN DEFAULT false)");
-    }
-});
-
-module.exports = db;
 
 app.use(cors());
 app.use(express.json());
+
+const tagsRouter = require("./routes/tags.js");
+app.use("/tags", tagsRouter);
 
 const findStatusRouter = require("./routes/shopItemByStatus.js");
 app.use("/shopItem/findByStatus", findStatusRouter);
