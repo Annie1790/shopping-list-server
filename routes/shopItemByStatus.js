@@ -9,14 +9,14 @@ const sendResults = (res, value) => {
     res.status(200);
     res.send(value);
 };
-//bug
+
 findStatusRouter.get("/", async (req, res, next) => {
     const result = async (status) => {
         return await sql`
         SELECT 
         * 
         FROM 
-        get_all_grocery_tag_junction_all AS g
+        sorted_groceries_with_tags AS g
         WHERE g.is_completed = ${status}
         `
     };

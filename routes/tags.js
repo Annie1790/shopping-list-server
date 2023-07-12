@@ -3,8 +3,6 @@ const sql = require("../database/database.js");
 
 const tagsRouter = express.Router();
 
-/* NOT TESTED */
-
 tagsRouter.get("/", async (req, res, next) => {
     const result = async () => {
         return await sql`
