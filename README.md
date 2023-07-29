@@ -2,7 +2,7 @@
 
 **All queries are returning a promise where I check the completion and failure for each scenario.**
 
-### Database:
+## Database
 
 **There are 3 databases at the moment.**
 
@@ -10,7 +10,16 @@
 2. `tag-list`: id(primary key), name(text), rank(real), bg_color(text), text_color(text)
 3. `grocery_tag_junction`: junction table, grocery_id(foreign key), tag_id(foreign key)
 
-### `shopItem.js` now has the updated POST and PUT request handler:
+### Connection
+
+The `DATABASE_URL` or `SHOPPING_LIST_DATABASE_URL` environment variable is expected to
+be set to a PostgreSQL connection string. The former is used by `fly.io`, the later is
+connivent for development. Best to set up `SHOPPING_LIST_DATABASE_URL` in your `.profile`
+or similar.
+
+See `database/database.js`.
+
+### `shopItem.js` now has the updated POST and PUT request handler
 
 `POST`: adds the new grocery list item to the database.
 
@@ -25,8 +34,7 @@
 - checks if `req.body` has `is_completed` in it, If not then add to it;
 - checks all the data types, if any is not a match, then returns **405** status;
 
-
-### `shopItemById.js` now has the updated DELETE request handler:
+### `shopItemById.js` now has the updated DELETE request handler
 
 - back-end receives `id`;
 - converts `param.id` to Number;
@@ -34,7 +42,7 @@
 - returns **204** if successful, if `param.id` doesn't exist, then **404** status;
 - otherwise, if an error occurs in the server, it returns **500** status;
 
-### `shopItemByStatus.js` now has the updated GET request handler:
+### `shopItemByStatus.js` now has the updated GET request handler
 
 - back-end receives a query for `is_completed` status;
 - checks if `req.body.is_completed` exists in the `req.body`, if not then an empty string `""` is added to the var;
@@ -42,7 +50,7 @@
 - if an error occurs in server, returns a **500** status;
 - else, calls `sendResults` function which will change any null value to an empty array, and sends **200** status;
 
-### `tags.js` now has the updated GET, POST, DELETE request handler:
+### `tags.js` now has the updated GET, POST, DELETE request handler
 
 `GET`: returns the tag list items to the front-end, therefore the user can choose which tag to add to a grocery item;
 
@@ -67,4 +75,3 @@
 - after promise, if fulfilled, checks if any value exist, if not then returns **404** status;
 - else sends **204** status;
 - if server error occurs, returns **500** status;
-
