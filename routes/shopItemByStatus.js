@@ -11,7 +11,7 @@ const sendResults = (res, value) => {
 };
 
 findStatusRouter.get("/", async (req, res, next) => {
-    const result = async (status) => {
+    const resultBoolean = async (status) => {
         return await sql`
         SELECT 
         * 
@@ -21,11 +21,19 @@ findStatusRouter.get("/", async (req, res, next) => {
         `
     };
 
+    const resultAll = async () => {
+        return await sql`
+        SELECT 
+        *
+        FROM
+        sorted_groceries_with_tags`
+    }
+
     let isCompleted = req.query.is_completed || "";
 
     if (isCompleted === "true") {
         try {
-            let data = await result(true);
+            let data = await resultBoolean(true);
             sendResults(res, data);
         }
         catch (error) {
@@ -34,7 +42,7 @@ findStatusRouter.get("/", async (req, res, next) => {
         }
     } else if (isCompleted === "false") {
         try {
-            let data = await result(false);
+            let data = await resultBoolean(false);
             sendResults(res, data);
         }
         catch (error) {
@@ -43,7 +51,8 @@ findStatusRouter.get("/", async (req, res, next) => {
         }
     } else {
         try {
-            let data = await result("");
+            let data = await resultAll();
+            console.log(data);
             sendResults(res, data);
         }
         catch (error) {
