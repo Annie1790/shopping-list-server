@@ -52,7 +52,6 @@ findStatusRouter.get("/", async (req, res, next) => {
     } else {
         try {
             let data = await resultAll();
-            console.log(data);
             sendResults(res, data);
         }
         catch (error) {
