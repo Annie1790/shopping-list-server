@@ -8,6 +8,7 @@ tagsRouter.get("/", async (req, res, next) => {
         return await sql`
         SELECT t.tag_id, t.tag_name, t.tag_rank, t.tag_bg_color, t.tag_text_color
         FROM tag_list AS t
+        ORDER BY t.tag_rank ASC
         `
     };
 
