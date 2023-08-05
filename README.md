@@ -19,6 +19,9 @@ or similar.
 
 See `database/database.js`.
 
+To connect with PgAdmin, enter the following to command line:
+`fly proxy 5432 -a galexdb`
+
 ### `shopItem.js` now has the updated POST and PUT request handler
 
 `POST`: adds the new grocery list item to the database.
