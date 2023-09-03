@@ -6,6 +6,12 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
+const recipesRouter = require("./routes/recipe.js");
+app.use("/recipe", recipesRouter);
+
+const recipeCategoryRouter = require("./routes/recipeCategory.js");
+app.use("/recipeCategories", recipeCategoryRouter);
+
 const tagsRouter = require("./routes/tags.js");
 app.use("/tags", tagsRouter);
 
