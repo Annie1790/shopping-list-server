@@ -16,13 +16,23 @@ shopItemRouter.post("/", async (req, res, next) => {
     if ((typeof req.body.name) === "string" && (typeof req.body.is_completed) === "boolean") {
         try {
             await result(req.body.name, req.body.is_completed);
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             res.status(201).send();
         } catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     } else {
-        res.status(405).send();
+        console.error(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        request body values are not accepted
+        `)
+        res.status(406).send();
     }
 });
 
@@ -42,16 +52,30 @@ shopItemRouter.put("/", async (req, res, next) => {
         try {
             const data = await result(req.body.grocery_id);
             if (data.count === 0) {
+                console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            requested id not found
+            `)
                 res.status(404).send();
             } else {
+                console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
                 res.status(204).send();
             }
         } catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     } else {
-        res.status(405).send();
+        console.log(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        request body values are not accepted
+        `)
+        res.status(406).send();
     };
 });
 

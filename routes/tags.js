@@ -15,13 +15,23 @@ tagsRouter.get("/", async (req, res, next) => {
     try {
         const data = await result();
         if (data.length != 0) {
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             res.status(200).send(data);
         } else {
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            data not found
+            `)
             res.status(404).send();
         }
     }
     catch (error) {
-        console.log(error);
+        console.error(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        ${error}
+        `);
         res.status(500).send();
     }
 
@@ -37,13 +47,23 @@ tagsRouter.post("/", async (req, res, next) => {
     if ((typeof req.body.grocery_id) === "number" && (typeof req.body.tag_id) === "number") {
         try {
             await result(req.body.grocery_id, req.body.tag_id);
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             res.status(201).send();
         }
         catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     } else {
+        console.error(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        Bad request
+        `);
         res.status(400).send();
     }
 });
@@ -61,13 +81,23 @@ tagsRouter.delete("/", async (req, res, next) => {
     if (!isNaN(req.body.grocery_id) && !isNaN(req.body.tag_id)) {
         try {
             await result(req.body.grocery_id, req.body.tag_id);
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             res.status(204).send();
         }
         catch(error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     } else {
+        console.error(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        Bad request
+        `);
         res.status(400).send();
     }
 });

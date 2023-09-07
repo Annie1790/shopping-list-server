@@ -5,7 +5,6 @@ const utility = require("../utility.js");
 const recipes = express.Router();
 
 recipes.post("/", async (req, res, next) => {
-    //recipe_name must be unique and needs to be put in a try/catch
 
     const insertToRecipeList = async (name, description, categoryId) => {
         return await sql`
@@ -34,16 +33,39 @@ recipes.post("/", async (req, res, next) => {
         `
     }
 
-    try {
-        const recipeId = await insertToRecipeList(req.body.recipe_name, req.body.recipe_description, req.body.recipe_category);
-        const ingredientsIds = await insertToRecipeIngredients();
-        await insertToRecipeIngredientJunction(utility.insertIngredientsToJunction(recipeId[0], ingredientsIds));
+    let recipe_category = Number(req.body.recipe_category);
 
+    if ((typeof req.body.recipe_name) === "string" && (typeof req.body.recipe_description) === "string" && (typeof recipe_category) === "number") {
+        try {
+            const recipeId = await insertToRecipeList(req.body.recipe_name, req.body.recipe_description, req.body.recipe_category);
+            const ingredientsIds = await insertToRecipeIngredients();
+            await insertToRecipeIngredientJunction(utility.insertIngredientsToJunction(recipeId[0], ingredientsIds));
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
+            res.status(201).send();
+
+        }
+        catch (error) {
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
+            res.status(500).send();
+        }
+    } else {
+        console.error(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        request body values are not accepted
+        `)
+        res.status(406).send();
     }
-    catch (error) {
-        console.log(error);
-    }
+
 
 });
+
+recipes.get("/", (req, res, next) => {
+
+})
 
 module.exports = recipes;

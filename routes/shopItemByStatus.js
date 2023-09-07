@@ -34,28 +34,46 @@ findStatusRouter.get("/", async (req, res, next) => {
     if (isCompleted === "true") {
         try {
             let data = await resultBoolean(true);
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             sendResults(res, data);
         }
         catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     } else if (isCompleted === "false") {
         try {
             let data = await resultBoolean(false);
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             sendResults(res, data);
         }
         catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     } else {
         try {
             let data = await resultAll();
+            console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
             sendResults(res, data);
         }
         catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     }
