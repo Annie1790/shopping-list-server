@@ -19,7 +19,7 @@ const recipeByCategoryRouter = require("./routes/recipeByCategory.js");
 app.use("/recipe/findByCategory/:filter", recipeByCategoryRouter);
 
 const recipesIdRouter = require("./routes/recipeById.js");
-app.use("/recipe/:id", recipesIdRouter);
+app.use("/recipe/:id/ingredients", recipesIdRouter);
 
 const recipesRouter = require("./routes/recipe.js");
 app.use("/recipe", recipesRouter);

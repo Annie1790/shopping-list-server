@@ -64,8 +64,8 @@ recipes.post("/", async (req, res, next) => {
 
 });
 
-recipes.get("/", (req, res, next) => {
-
+recipes.put("/", (req, res, next) => {
+    console.log(req.body);
 })
 
 module.exports = recipes;
