@@ -59,7 +59,7 @@ recipeByCategory.get("/", async (req, res, next) => {
             case 4:
                 res.status(200).send(await returnWithFilter(4));
                 break;
-            case "5":
+            case 5:
                 res.status(200).send(await returnWithFilter(5));
                 break;
             case 6:
