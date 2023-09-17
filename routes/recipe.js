@@ -64,8 +64,45 @@ recipes.post("/", async (req, res, next) => {
 
 });
 
-recipes.put("/", (req, res, next) => {
+recipes.put("/setFavorite", async (req, res, next) => {
     console.log(req.body);
+    const result = async (id) => {
+        return await sql`
+        UPDATE recipe_list 
+        SET recipe_is_favorite=${req.body.is_favorite}
+        WHERE recipe_id=${req.body.id}
+        `
+    }
+    if ((typeof req.body.id == "number") && (typeof req.body.is_favorite == "boolean")) {
+        try {
+            const data = await result(req.body.id);
+            if (data.count === 0) {
+                console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            requested id not found
+            `)
+                res.status(404).send();
+            } else {
+                console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
+                res.status(204).send();
+            }
+        }
+        catch (error) {
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
+            res.status(500).send();
+        }
+    } else {
+        console.error(`
+        Request ${req.method} on ${req.originalUrl} was failed: \n
+        request body values are not accepted
+        `)
+        res.status(400).send();
+    }
 })
 
 module.exports = recipes;
