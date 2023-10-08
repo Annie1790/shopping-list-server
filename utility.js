@@ -57,5 +57,19 @@ const convertDatabaseRows = (arr) => {
     })
 }
 
+const convertIngredientsObjToArr = (arr) => {
+    return arr.map((segment) => {
+        return [segment.ingredient_name, segment.ingredient_category];
+    })
+}
 
-module.exports = {convertDatabaseRows};
+const insertIngredientsToJunction = (recipeId, ingredientsArr) => {
+    let result = [];
+    for (let segment of ingredientsArr) {
+        result.push([recipeId.recipe_id, segment.ingredient_id]);
+    }
+    return result;
+}
+
+
+module.exports = { convertDatabaseRows, convertIngredientsObjToArr, insertIngredientsToJunction };

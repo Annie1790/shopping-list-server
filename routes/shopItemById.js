@@ -14,19 +14,26 @@ shopItemById.delete("/", async (req, res, next) => {
         try {
             const data = await result(req.params.id);
             if (data.count === 0) {
+                console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            requested id not found
+            `)
                 res.status(404).send();
             } else {
+                console.log(`
+            Request ${req.method} on ${req.originalUrl} was succesfull
+            `)
                 res.status(204).send();
             }
         }
         catch (error) {
-            console.log(error);
+            console.error(`
+            Request ${req.method} on ${req.originalUrl} was failed: \n
+            ${error}
+            `);
             res.status(500).send();
         }
     }
-});
-
-shopItemById.put("/", (req, res, next) => {
 });
 
 module.exports = shopItemById;
