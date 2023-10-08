@@ -71,11 +71,11 @@ shopItemRouter.put("/", async (req, res, next) => {
             res.status(500).send();
         }
     } else {
-        console.log(`
+        console.error(`
         Request ${req.method} on ${req.originalUrl} was failed: \n
         request body values are not accepted
         `)
-        res.status(406).send();
+        res.status(400).send();
     };
 });
 
