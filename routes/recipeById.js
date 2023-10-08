@@ -18,8 +18,8 @@ recipes.get("/", async (req, res, next) => {
     }
 
     let receivedId = Number(req.params.id);
-
-    res.status(201).send((await getIngredients(receivedId)));
+    const result = await getIngredients(receivedId);
+    res.status(200).send(result);
 
 });
 

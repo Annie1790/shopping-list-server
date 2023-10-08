@@ -59,7 +59,7 @@ const convertDatabaseRows = (arr) => {
 
 const convertIngredientsObjToArr = (arr) => {
     return arr.map((segment) => {
-        return [segment.name, segment.tag];
+        return [segment.ingredient_name, segment.ingredient_category];
     })
 }
 
