@@ -16,3 +16,5 @@ healthCheckRouter.get("/", async (req, res, next) => {
         res.status(500).send();
     }
 })
+
+module.exports = healthCheckRouter;
