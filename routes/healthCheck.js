@@ -10,6 +10,7 @@ healthCheckRouter.get("/", async (req, res, next) => {
         reserved.release()
 
         // send an OK if it is fine
+        res.status(200).send();
     }
     catch (error) {
         console.log(error);
