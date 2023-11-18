@@ -6,6 +6,9 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
+const healthCheckRouter = require("./routes/healthCheck.js");
+app.use("/healthCheck", healthCheckRouter);
+
 const tagsRouter = require("./routes/tags.js");
 app.use("/tags", tagsRouter);
 
