@@ -7,7 +7,7 @@ healthCheckRouter.get("/", async (req, res, next) => {
     try {
         // check if the connection is ok
         const reserved = await sql.reserve()
-        await reserved.release()
+        reserved.release()
 
         // send an OK if it is fine
     }
