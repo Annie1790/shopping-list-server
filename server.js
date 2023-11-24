@@ -39,6 +39,9 @@ app.use("/shopItem/:id", shopItemById);
 const shopItemRouter = require("./routes/shopItem.js");
 app.use("/shopItem", shopItemRouter);
 
+const mealPlan = require("./routes/mealPlan.js");
+app.use("/mealPlan", mealPlan);
+
 app.listen(PORT, () => {
     console.log(`Server is listening on ${PORT}`);
 });
