@@ -4,7 +4,7 @@
 
 ## Database
 
-**There are 3 databases at the moment.**
+**There are 3 tables (7 in development) at the moment.**
 
 1. `grocery_list`:  id(primary key), name(text), is_completed(boolean)
 2. `tag-list`: id(primary key), name(text), rank(real), bg_color(text), text_color(text)
